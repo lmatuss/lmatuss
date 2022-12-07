@@ -1,5 +1,5 @@
 Durch wärmen eines Körpers X wird, dargetellt mit LEDs, die Temperatur des Menschen auf ein Exponat übertragen,
-welches durch die Wärme zum "leben erweckt"/entspannt/hamronisiert wird. 
+welches durch die Wärme zum "leben erweckt"/entspannt/harmonisiert wird. 
 
 
  Zu den LED: 
