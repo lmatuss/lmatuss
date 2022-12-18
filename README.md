@@ -1,11 +1,4 @@
-Durch wärmen eines Körpers X wird, dargetellt mit LEDs, die Temperatur des Menschen auf ein Exponat übertragen,
-welches durch die Wärme zum "leben erweckt"/entspannt/harmonisiert wird. 
+Durch wärmen eines "Steins" wird ein verdrehtes Objekt entdreht/entspannt. 
 
-
- Zu den LED: 
- 
- Kommt Wärme, werden werden die LEDs nach einander angeschaltet, sind alle LEDs an, bleiben sie an bis sich die Wärmequelle entfernt. (alle auf einmal aus)
- 
- --> über einen Motor wird Exponat bewegt, ist Wärme weg, begwet sich nichts. 
- 
+Temperatur wird mit hilfe eines Infarotsensore (Waveshare) gemessen und steuert einen Steppermotor. Der Motor soll in Abhönigkeit der Temperatur von porition A nach B drehen. bzw. bei der höchten Tempertaur absolviert der motor 4 volle umdrehungen bis zur Entpannung der Gummies, bei Zimmmertempertur dreht er sich zurück zum verknoteten Zustand. 
  
