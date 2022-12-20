@@ -1,77 +1,76 @@
 #include <Wire.h>
 #include "WaveShare_MLX90614.h"
-//Libraries:
-#include <AccelStepper.h>
+#include <Stepper.h>
+
+
+WaveShare_MLX90614   MLX90614 = WaveShare_MLX90614();
 
 #define dirPin 2
 #define stepPin 3
-#define motorInterfaceType 1
-#define stepsPerRevolution 200
-    
-  
+#define stepsPerRevolution 18
+#define speeed 1000
 
-//Temp Declarations:
-  float Temp = 0;
-  int Temp_map=0;
-  int old_temp_map=0;
-
-AccelStepper stepper = AccelStepper(motorInterfaceType, stepPin, dirPin);
-WaveShare_MLX90614   MLX90614 = WaveShare_MLX90614();
-
+float Temp = 0;
+int Temp_map=0;
+int old_temp_map=0;
 
 
 void setup() {
   
   Serial.begin(115200);
-  MLX90614.begin(); 
-
-  stepper.setMaxSpeed(2000);
-  stepper.setAcceleration(200);
-  stepper.moveTo(500);
-  
+  MLX90614.begin();  
+  // Declare pins as output:
+  pinMode(stepPin, OUTPUT);
+  pinMode(dirPin, OUTPUT);
 }
 
 void loop() {
- 
-
-  //Serial.print("Ambient Temp: "); Serial.print(MLX90614.readAmbientTemp()); Serial.print(" C");
-  Serial.print(" \tObject Temp: "); Serial.print(MLX90614.readObjectTemp()); Serial.println(" C");
-  Serial.println();
-  delay(500);
+  //Serial.print(" \tObject Temp: "); Serial.print(MLX90614.readObjectTemp()); Serial.println(" C");
+  //Serial.println();
+  //delay(500);
 
   Temp = MLX90614.readObjectTemp();
-  // old_temp_map = Temp_map;
-  // Temp_map = map(Temp*10,180, 360, 0, stepsPerRevolution );  
+  old_temp_map = int(Temp_map);
+  Temp_map = map(Temp*10,180, 360, 0, stepsPerRevolution);
+       
+      if (old_temp_map > Temp_map){
+        while (old_temp_map > Temp_map){
+        digitalWrite(dirPin, HIGH);   //set direction
+        // Spin the stepper motor 1 revolution slowly:
+          for (int i = 0; i < stepsPerRevolution; i++) {
+            // These four lines result in 1 step:
+            digitalWrite(stepPin, HIGH);
+            delayMicroseconds(speeed);
+            digitalWrite(stepPin, LOW);
+            delayMicroseconds(speeed);
+          }
+              old_temp_map--;
+  }
+      }
+      else if (old_temp_map < Temp_map){
+        while (old_temp_map < Temp_map) {
 
-  // Set the position to 0:
-  //stepper.setCurrentPosition(0);
+        
+         digitalWrite(dirPin, LOW);   //set direction
+        // Spin the stepper motor 1 revolution slowly:
+          for (int i = 0; i < stepsPerRevolution; i++) {
+            // These four lines result in 1 step:
+            digitalWrite(stepPin, HIGH);
+            delayMicroseconds(speeed);
+            digitalWrite(stepPin, LOW);
+            delayMicroseconds(speeed);
 
-      if (Temp>=22){
-         digitalWrite(dirPin, HIGH);
-       // Spin the stepper motor 1 revolution slowly:
-      for (int i = 0; i < stepsPerRevolution; i++) {
-        // These four lines result in 1 step:
-        digitalWrite(stepPin, HIGH);
-        delayMicroseconds(2000);
-        digitalWrite(stepPin, LOW);
-        delayMicroseconds(2000);
+      }
+            old_temp_map++;
         }
       }
+      else {
+        digitalWrite(dirPin, LOW);
+        digitalWrite(stepPin, LOW);
 
-      //stepper.setCurrentPosition(100);
+      }
 
-  else {
-  digitalWrite(dirPin, LOW);
-  stepper.moveTo(-stepper.currentPosition());
 
+
+}
   
-  }
-
-
-  }
-  
-
-
-
-
-
